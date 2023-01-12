@@ -1,0 +1,74 @@
+<template>
+    <Head title="Skills Create"/>
+
+    <AuthenticatedLayout>
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Skills</h2>
+        </template>
+        <div class="py-12">
+            <div class="max-w-md mx-auto sm:px-6 lg:px-8 bg-white">
+                <form class="p-4" @submit.prevent="submit">
+                    <InputLabel for="name" value="Skill Name"/>
+                    <TextInput
+                        id="name"
+                        type="name"
+                        class="mt-1 block w-full"
+                        v-model="form.name"
+                        autofocus
+                        autocomplete="name"
+                        placeholder="Skill Name"
+                    />
+                    <InputError class="mt-2" :message="form.errors.name"/>
+
+                    <div class="mt-4">
+                        <InputLabel for="image" value="Skill Image"/>
+
+                        <TextInput
+                            id="image"
+                            type="file"
+                            class="mt-1 block w-full"
+                            @input="form.image=$event.target.files[0]"
+
+                        />
+
+                        <InputError class="mt-2" :message="form.errors.image"/>
+
+                        <div class="flex items-center justify-end mt-4">
+                            <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }"
+                                           :disabled="form.processing">
+                                Log in
+                            </PrimaryButton>
+                        </div>
+
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </AuthenticatedLayout>
+
+</template>
+
+<script setup>
+
+import {Head, useForm} from "@inertiajs/inertia-vue3";
+import AuthenticatedLayout
+    from "../../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js/Layouts/AuthenticatedLayout.vue";
+import InputLabel from "../../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/InputLabel.vue";
+import TextInput from "../../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/TextInput.vue";
+import InputError from "../../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/InputError.vue";
+import PrimaryButton
+    from "../../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/PrimaryButton.vue";
+
+
+const form = useForm({
+    name: "",
+    image: null,
+});
+
+const submit = () => {
+    form.post(route('skills.store'));
+};
+
+</script>
+
